@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Eye Rest</title>
+	<!-- <link rel="stylesheet" href="../assets/css/style.css"> -->
+	<link rel="stylesheet" href="../assets/css/setting.css">
+</head>
+<body>
+	<main>
+		<p class="title">General</p>
+		<section class="setting">		
+			<div class="setting_break" id="long_break">
+				<img src="../assets/img/eye.png" alt="ic">
+				<label class="container" style="height: 80%">
+				  <input type="checkbox" value="" id="enable_long_break">
+				  <span class="checkmark"></span>
+				</label>									
+				<p class="break_text">Take a long break every</p>
+				<div class="custom-select">
+				  <select id="longTimeSettedBetweenRest">
+				    <option value="20000">20sec</option>
+				    <option value="15000">15sec</option>
+				    <option value="10000">10sec</option>
+				    <option value="9000">9sec</option>
+				    <option value="6000">6sec</option>
+				    <option value="3000" selected="selected">3sec</option>
+				  </select>
+				</div>
+				<p class="break_text">with</p>
+				<div class="custom-select">
+				  <select id="longTimeSettedRest">
+				    <option value="20000">20sec</option>
+				    <option value="15000">15sec</option>
+				    <option value="10000">10sec</option>
+				    <option value="9000">9sec</option>
+				    <option value="6000">6sec</option>
+				    <option value="3000" selected="selected">3sec</option>
+				  </select>
+				</div>
+			</div>
+			<div class="setting_break" id="notify_longbreak">
+				<img src="../assets/img/eye.png" alt="ic">
+				<label class="container" style="height: 80%">
+				  <input type="checkbox" value="" id="enable_notification">
+				  <span class="checkmark"></span>
+				</label>									
+				<p class="break_text">Notufy me about a long setting_break coming in</p>
+				<div class="custom-select">
+				  <select id="longTimeSettedNotification">
+				    <option value="20000">20sec</option>
+				    <option value="15000">15sec</option>
+				    <option value="10000">10sec</option>
+				    <option value="9000">9sec</option>
+				    <option value="6000">6sec</option>
+				    <option value="2000" selected="selected">2sec</option>
+				  </select>
+				</div>
+			</div>
+			<div class="setting_break" id="short_break">
+				<img src="../assets/img/eye.png" alt="ic">
+				<label class="container" style="height: 80%">
+				  <input type="checkbox" value="" id="enable_short_break">
+				  <span class="checkmark"></span>
+				</label>									
+				<p class="break_text">Take a short setting_break every</p>
+				<div class="custom-select">
+				  <select id="shorTimeSettedBetweenRest">
+				    <option value="20000">20sec</option>
+				    <option value="15000">15sec</option>
+				    <option value="10000">10sec</option>
+				    <option value="9000">9sec</option>
+				    <option value="6000">6sec</option>
+				    <option value="3000" selected="selected">3sec</option>
+				  </select>
+				</div>
+				<p class="break_text">with</p>
+				<div class="custom-select">
+				  <select id="shorTimeSettedRest">
+				    <option value="20000">20sec</option>
+				    <option value="15000">15sec</option>
+				    <option value="10000">10sec</option>
+				    <option value="9000">9sec</option>
+				    <option value="6000">6sec</option>
+				    <option value="3000" selected="selected">3sec</option>
+				  </select>
+				</div>
+			</div>
+			<div class="setting_break">
+				<img src="../assets/img/eye.png" alt="ic">
+				<label class="container">Enable sounds
+				  <input type="checkbox" value="active" id="enable_sound">
+				  <span class="checkmark"></span>
+				</label>									
+			</div>
+			<div class="setting_break" >
+				<img src="../assets/img/eye.png" alt="ic">
+				<label class="container">Enable strict mode
+				  <input type="checkbox" value="" id="enable_strict_mode">
+				  <span class="checkmark"></span>
+				</label>									
+			</div>
+			<div class="setting_break" >
+				<img src="../assets/img/eye.png" alt="ic">
+				<label class="container">Let me close notifications with the right mouse button
+				  <input type="checkbox" value="" id="enable_close_mode">
+				  <span class="checkmark"></span>
+				</label>									
+			</div>
+			<div class="setting_break" >
+				<img src="../assets/img/eye.png" alt="ic">
+				<label class="container">Enable inactivity tracking
+				  <input type="checkbox" value="" id="enable_close_when_play_video">
+				  <span class="checkmark"></span>
+				</label>									
+			</div>
+		</section>
+		<section class="try">
+			<div id="active_long">Try long break</div>
+			<div id="active_short">Try short break</div>
+		</section>
+		<section class="save">
+			<div id="save">Save</div>
+		</section>
+	</main>
+<script src="./main.js"></script>
+</body>
+</html>
