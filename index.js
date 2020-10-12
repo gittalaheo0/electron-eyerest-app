@@ -21,8 +21,16 @@ const breakData = {
   enabeSound: true,
   enabeStrictMode: false,
   enabeCloseRightBtn: true,
-  enabeWindowNearBy: false,
-  enabeInactivityTracking: false,
+  enabeCloseWhenPlayVideo: false,
+  setAplication: function(enabeSound, enabeStrictMode, enabeCloseRightBtn, enabeCloseWhenPlayVideo, longBreak, notification, shortBreak){
+    this.enabeSound = enabeSound;
+    this.enabeStrictMode = enabeStrictMode;
+    this.enabeCloseRightBtn = enabeCloseRightBtn;
+    this.enabeCloseWhenPlayVideo = enabeCloseWhenPlayVideo;
+    this.longBreak.active = longBreak;
+    this.longBreak.notification = notification;
+    this.shortBreak.active = shortBreak;
+  },
   setLongbreakTime: function(betweenRest, rest, notification){
     this.longBreak.timeSettedBetweenRest = parseInt(betweenRest);
     this.longBreak.timeSettedRest = parseInt(rest);
@@ -37,24 +45,29 @@ const breakData = {
     if(this.longBreak.timeSettedRest!=0 &&this.longBreak.timeSettedBetweenRest!=0&&(this.longBreak.timeSettedNotification-this.longBreak.timeSettedBetweenRest<=0)){
       if(!now){
         openLongRestDialog = setTimeout(function() {
-          // open long rest dialog first time
-          createBreakDialog("", this.longBreak.timeSettedRest);
-          // open long rest dialog the rest time
-          openAgainLongRestDialog = setTimeout(function(){ 
-            //callback
-            this.activeLongBreak(false) 
-          }.bind(this), this.longBreak.timeSettedRest)
-
+          //if lognbreak is actived
+          if(this.longBreak.active){
+            // open long rest dialog first time
+            createBreakDialog("", this.longBreak.timeSettedRest);
+            // open long rest dialog the rest time
+            openAgainLongRestDialog = setTimeout(function(){ 
+              //callback
+              this.activeLongBreak(false) 
+            }.bind(this), this.longBreak.timeSettedRest)            
+          }
         }.bind(this), this.longBreak.timeSettedBetweenRest)
 
         openNotification = setTimeout(function() {
-          // open notifycation first time
-          createBreakDialog("notification", this.longBreak.timeSettedNotification);
+          //if lognbreak is actived
+          if(this.longBreak.notification){
+            // open notifycation first time
+            createBreakDialog("notification", this.longBreak.timeSettedNotification);            
+          }
         }.bind(this), this.longBreak.timeSettedBetweenRest-this.longBreak.timeSettedNotification)
 
       }else{
         // open long rest dialog
-          createBreakDialog("", this.longBreak.timeSettedRest);
+        createBreakDialog("", this.longBreak.timeSettedRest);
       }
     }else{
       // open error window
@@ -65,13 +78,15 @@ const breakData = {
     if(this.shortBreak.timeSettedRest!=0 &&this.shortBreak.timeSettedBetweenRest!=0){
       if(!now){
         openShortRestDialog = setTimeout(function() {
-          // open long rest dialog
-          createBreakDialog("", this.shortBreak.timeSettedRest);
-
-          // reopen short break
-          openAgainShortRestDialog = setTimeout(function(){ 
-            this.activeShortBreak(false)
-          }.bind(this), this.shortBreak.timeSettedRest)
+          // if shortbreak is actived
+          if(this.shortBreak.active){
+            // open long rest dialog
+            createBreakDialog("", this.shortBreak.timeSettedRest);
+            // reopen short break
+            openAgainShortRestDialog = setTimeout(function(){ 
+              this.activeShortBreak(false)            
+            }.bind(this), this.shortBreak.timeSettedRest)
+          }
         }.bind(this), this.shortBreak.timeSettedBetweenRest)
       }else{
         // open short rest dialog
@@ -206,6 +221,8 @@ ipcMain.on('open-break-dialog-countdown', (event, arg) => {
     // settime
     breakData.setLongbreakTime(arg[0],arg[1] ,arg[2]);
     breakData.setShortbreakTime(arg[3],arg[4]);
+    breakData.setAplication(arg[5],arg[6],arg[7],arg[8],arg[9],arg[10],arg[11]);
+    console.log(breakData);
     if(!saveOneTime){
       // app save once
       saveOneTime = true;
@@ -216,12 +233,8 @@ ipcMain.on('open-break-dialog-countdown', (event, arg) => {
       clearTimeout(openShortRestDialog);
       clearTimeout(openAgainShortRestDialog);      
     }
-    // open break dialog
-    // if(arg[9] == "true") breakData.activeLongBreak(false);
-    breakData.activeLongBreak(false);
-    // if(arg[10] == "true") breakData.activeLongBreak(false);
-      
-    // breakData.activeShortBreak(false);      
+    // breakData.activeLongBreak(false);
+    breakData.activeShortBreak(false);      
     // close main window
     win.close()
 })
