@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, remote, Tray, ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, remote, Tray, ipcMain, dialog } = require('electron')
 const path = require("path")
 
 //declare the setimeout varriable
@@ -61,7 +61,7 @@ const breakData = {
           //if lognbreak is actived
           if(this.longBreak.notification){
             // open notifycation first time
-            createBreakDialog("notification", this.longBreak.timeSettedNotification);            
+            createBreakDialog("notification", this.longBreak.timeSettedNotification, this.enabeSound);            
           }
         }.bind(this), this.longBreak.timeSettedBetweenRest-this.longBreak.timeSettedNotification)
 
@@ -70,8 +70,7 @@ const breakData = {
         createBreakDialog("", this.longBreak.timeSettedRest);
       }
     }else{
-      // open error window
-      console.log("you have to set the rest time and the time betwwen rest RIGHT");
+      dialog.showErrorBox('You set the wrong time', ""); 
     }
   },
   activeShortBreak: function(now){
@@ -93,10 +92,7 @@ const breakData = {
         createBreakDialog("", this.shortBreak.timeSettedRest);
       }
     }else{
-      // open error window
-      console.log("you have to set the rest time and the time betwwen rest RIGHT");
     }
-
   },
 }
 var win = null;
@@ -149,7 +145,7 @@ function createWindow () {
   Menu.setApplicationMenu(menu)
 }
 
-function createBreakDialog(type, timeToClose) {
+function createBreakDialog(type, timeToClose, sound) {
   // Create the browser window.
   let breakWin = new BrowserWindow({
     x: type=="notification" ? 0 : '',
@@ -166,7 +162,11 @@ function createBreakDialog(type, timeToClose) {
   })  
   breakWin.setIcon(path.join(__dirname, '/assets/img/eye.png'));
   // and load the index.html of the app.
-  breakWin.loadFile(`./src/${type}-break.html`);
+  if(sound){
+    breakWin.loadFile(`./src/${type}-sound-break.html`);
+  }else{
+    breakWin.loadFile(`./src/${type}-break.html`);
+  }
   // close when timeout
   setTimeout(()=>{
     breakWin.close();
@@ -222,7 +222,6 @@ ipcMain.on('open-break-dialog-countdown', (event, arg) => {
     breakData.setLongbreakTime(arg[0],arg[1] ,arg[2]);
     breakData.setShortbreakTime(arg[3],arg[4]);
     breakData.setAplication(arg[5],arg[6],arg[7],arg[8],arg[9],arg[10],arg[11]);
-    console.log(breakData);
     if(!saveOneTime){
       // app save once
       saveOneTime = true;
@@ -233,10 +232,13 @@ ipcMain.on('open-break-dialog-countdown', (event, arg) => {
       clearTimeout(openShortRestDialog);
       clearTimeout(openAgainShortRestDialog);      
     }
-    // breakData.activeLongBreak(false);
-    breakData.activeShortBreak(false);      
-    // close main window
-    win.close()
+    breakData.activeLongBreak(false);
+
+    if(breakData.longBreak.timeSettedNotification-breakData.longBreak.timeSettedBetweenRest<0){
+      breakData.activeShortBreak(false);      
+      // close main window if set the wrong time
+      win.close()
+    }
 })
 
 
