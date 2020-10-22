@@ -3,11 +3,24 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>long break</title>
 	<link rel="stylesheet" href="../assets/css/break.css">
 </head>
 <body>
-	<!-- <img src="" alt=""> -->
-	Long break!!! Move your ass in 30s
+	Break!!! Move your ass until this close!!
+	<div class="close-btn" style="display: none">Close</div>
+<script>
+	const { ipcRenderer } = require('electron')
+	ipcRenderer.send('get infomation')
+	ipcRenderer.on('information-reply', (event, arg) => {
+  		// strict mode handle
+  		strictModeHandle(arg[3])
+  		console.log(arg[3]);
+	})
+
+	// handle information
+	function strictModeHandle(strictMode){
+			document.querySelector(".close-btn").style.display = !strictMode ? 'block' : 'none'
+	}
+</script>
 </body>
 </html>

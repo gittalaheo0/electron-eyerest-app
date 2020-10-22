@@ -61,7 +61,7 @@ const breakData = {
           //if lognbreak is actived
           if(this.longBreak.notification){
             // open notifycation first time
-            createBreakDialog("notification", this.longBreak.timeSettedNotification, this.enabeSound);            
+            createBreakDialog("notification", this.longBreak.timeSettedNotification);            
           }
         }.bind(this), this.longBreak.timeSettedBetweenRest-this.longBreak.timeSettedNotification)
 
@@ -80,7 +80,7 @@ const breakData = {
           // if shortbreak is actived
           if(this.shortBreak.active){
             // open long rest dialog
-            createBreakDialog("", this.shortBreak.timeSettedRest);
+            createBreakDialog("",this.shortBreak.timeSettedRest);
             // reopen short break
             openAgainShortRestDialog = setTimeout(function(){ 
               this.activeShortBreak(false)            
@@ -89,7 +89,7 @@ const breakData = {
         }.bind(this), this.shortBreak.timeSettedBetweenRest)
       }else{
         // open short rest dialog
-        createBreakDialog("", this.shortBreak.timeSettedRest);
+        createBreakDialog("",this.shortBreak.timeSettedRest);
       }
     }else{
     }
@@ -145,7 +145,7 @@ function createWindow () {
   Menu.setApplicationMenu(menu)
 }
 
-function createBreakDialog(type, timeToClose, sound) {
+function createBreakDialog(type, timeToClose) {
   // Create the browser window.
   let breakWin = new BrowserWindow({
     x: type=="notification" ? 0 : '',
@@ -156,17 +156,16 @@ function createBreakDialog(type, timeToClose, sound) {
     fullscreen: type=="notification" ? false : true,
     focusable: false,
     webPreferences: {
+      nodeIntegration: true,
       enableRemoteModule: true,
     },
-    frame: false
+    title: timeToClose,
+    frame: false,
   })  
   breakWin.setIcon(path.join(__dirname, '/assets/img/eye.png'));
   // and load the index.html of the app.
-  if(sound){
-    breakWin.loadFile(`./src/${type}-sound-break.html`);
-  }else{
-    breakWin.loadFile(`./src/${type}-break.html`);
-  }
+  // if enable sound is true or false
+  breakWin.loadFile(`./src/${type}-break.html`);
   // close when timeout
   setTimeout(()=>{
     breakWin.close();
@@ -234,11 +233,15 @@ ipcMain.on('open-break-dialog-countdown', (event, arg) => {
     }
     breakData.activeLongBreak(false);
 
-    if(breakData.longBreak.timeSettedNotification-breakData.longBreak.timeSettedBetweenRest<0){
+    if(breakData.longBreak.timeSettedNotification-breakData.longBreak.timeSettedBetweenRest<=0){
       breakData.activeShortBreak(false);      
       // close main window if set the wrong time
       win.close()
     }
+})
+
+ipcMain.on('get infomation', (event, arg) => {
+    event.reply('information-reply', [breakData.longBreak, breakData.shortBreak, breakData.enabeSound, breakData.enabeStrictMode, breakData.enabeCloseRightBtn])
 })
 
 
