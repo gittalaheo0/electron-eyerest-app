@@ -7,5 +7,31 @@
 </head>
 <body>
 	prepare for break
-</body>
+	<audio id="myAudio">
+	  <source src="../assets/Winding_Alarm_Clock.mp3" type="audio/mpeg">
+	</audio>
+<script>
+	const { ipcRenderer, remote } = require('electron')
+	ipcRenderer.send('get infomation')
+	ipcRenderer.on('information-reply', (event, arg) => {
+  		// strict mode handle
+  		soundHandle(arg[2])
+  		closeModeHandle(arg[4])
+	})
+
+	// handle information
+	function soundHandle(sound){
+		if(sound){
+			let x = document.getElementById("myAudio"); 
+			x.play(); 
+		}
+	}
+	function closeModeHandle(closeWithRightMouse){
+		if(closeWithRightMouse){
+			document.documentElement.onclick = function () {
+				remote.getCurrentWindow().minimize()
+			}
+		}
+	}
+</script></body>
 </html>

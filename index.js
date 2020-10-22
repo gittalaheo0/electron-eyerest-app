@@ -241,7 +241,7 @@ ipcMain.on('open-break-dialog-countdown', (event, arg) => {
 })
 
 ipcMain.on('get infomation', (event, arg) => {
-    event.reply('information-reply', [breakData.longBreak, breakData.shortBreak, breakData.enabeSound, breakData.enabeStrictMode, breakData.enabeCloseRightBtn])
+    event.reply('information-reply', [breakData.longBreak, breakData.shortBreak, breakData.enabeSound, breakData.enabeStrictMode, breakData.enabeCloseRightBtn, breakData.enabeCloseWhenPlayVideo])
 })
 
 
