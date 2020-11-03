@@ -48,7 +48,7 @@ const breakData = {
           //if lognbreak is actived
           if(this.longBreak.active){
             // open long rest dialog first time
-            createBreakDialog("", this.longBreak.timeSettedRest);
+            createBreakDialog("long", this.longBreak.timeSettedRest);
             // open long rest dialog the rest time
             openAgainLongRestDialog = setTimeout(function(){ 
               //callback
@@ -67,7 +67,7 @@ const breakData = {
 
       }else{
         // open long rest dialog
-        createBreakDialog("", this.longBreak.timeSettedRest);
+        createBreakDialog("long", this.longBreak.timeSettedRest);
       }
     }else{
       dialog.showErrorBox('You set the wrong time', ""); 
@@ -80,7 +80,7 @@ const breakData = {
           // if shortbreak is actived
           if(this.shortBreak.active){
             // open long rest dialog
-            createBreakDialog("",this.shortBreak.timeSettedRest);
+            createBreakDialog("short",this.shortBreak.timeSettedRest);
             // reopen short break
             openAgainShortRestDialog = setTimeout(function(){ 
               this.activeShortBreak(false)            
@@ -89,7 +89,7 @@ const breakData = {
         }.bind(this), this.shortBreak.timeSettedBetweenRest)
       }else{
         // open short rest dialog
-        createBreakDialog("",this.shortBreak.timeSettedRest);
+        createBreakDialog("short",this.shortBreak.timeSettedRest);
       }
     }else{
     }
@@ -164,8 +164,8 @@ function createBreakDialog(type, timeToClose) {
   })  
   breakWin.setIcon(path.join(__dirname, '/assets/img/eye.png'));
   // and load the index.html of the app.
-  // if enable sound is true or false
   breakWin.loadFile(`./src/${type}-break.html`);
+  // breakWin.webContents.openDevTools()
   // close when timeout
   setTimeout(()=>{
     breakWin.close();
@@ -248,6 +248,7 @@ ipcMain.on('get infomation', (event, arg) => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     // app.quit()

@@ -1,10 +1,22 @@
 body{
-	height: 100vh;
-	display: grid;
+	background: #111;
+	display: flex;
 	justify-content: center;
 	align-items: center;
-
+	font-size: 2rem;
+	height: 90vh;
+	color: #fff;
+	flex-direction: column;
+	flex-wrap: wrap;
 }
-::-webkit-scrollbar {
-  display: none;
+p{
+	display: inline-block
+}
+.close-btn{
+	border: 3px solid #fff;
+	border-radius: 4px;
+	padding: 2rem 4rem;
+	font-size: 3rem;
+	margin: 2rem 0;
+	cursor: pointer;
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../assets/css/break.css">
+</head>
+<body>
+	<div class="">
+		<p id="time" style="display: inline-block"></p>
+	</div>
+	<div class="close-btn" style="display: none" >Close</div>
+<script>
+	const { ipcRenderer, remote } = require('electron')
+	ipcRenderer.send('get infomation')
+	ipcRenderer.on('information-reply', (event, arg) => {
+  		// strict mode handle
+  		strictModeHandle(arg[3]);
+  		countDown(arg[0].timeSettedRest)
+	})
+
+	// handle information
+	function strictModeHandle(strictMode){
+			document.querySelector(".close-btn").style.display = !strictMode ? 'block' : 'none'
+	}
+
+	document.querySelector(".close-btn").onclick = function () {
+		remote.getCurrentWindow().close();
+	}
+
+	function countDown(sec){
+		let html = document.querySelector("#time");
+		sec = parseFloat(sec) - 1000
+		setInterval(function () {
+			if(sec<=60000){
+				html.innerText = `Long Break!!! Move your ass in ${sec/1000}sec`;
+			}else{
+				html.innerText = `Long Break!!! Move your ass in ${Math.floor(sec/60000)}min`;
+			}
+			sec-=1000;
+		}, 1000)
+	}	
+</script>
+</body>
+</html>
